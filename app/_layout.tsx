@@ -30,6 +30,14 @@ export default function RootLayout() {
             animation: 'fade_from_bottom',
           }}
         />
+        <Stack.Screen
+          name="meal/add"
+          options={{
+            headerShown: false,
+            presentation: 'card',
+            animation: 'slide_from_right',
+          }}
+        />
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>
