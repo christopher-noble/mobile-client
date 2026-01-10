@@ -1,9 +1,3 @@
-/**
- * MealList Component
- * 
- * Component for displaying a list of meals
- */
-
 import { router } from 'expo-router';
 import React, { useCallback, useState } from 'react';
 import { ActivityIndicator, FlatList, StyleSheet, Text, View } from 'react-native';

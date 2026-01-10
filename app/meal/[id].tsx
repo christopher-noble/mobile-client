@@ -3,16 +3,11 @@ import { useMeal } from '@/src/features/meals';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams } from 'expo-router';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, {
-  FadeInDown,
-  FadeInUp,
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-  withRepeat,
-  withTiming,
+    FadeInDown,
+    FadeInUp,
 } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -47,17 +42,12 @@ const CARD_SHADOW_OFFSET_Y = 2;
 const CARD_SHADOW_OPACITY = 0.1;
 const CARD_SHADOW_RADIUS = 4;
 const CARD_ELEVATION = 3;
-const SKELETON_BASE_COLOR = '#E5E7EB';
-const SKELETON_HIGHLIGHT_COLOR = '#F3F4F6';
-const SHIMMER_DURATION = 1500;
-const SKELETON_BORDER_RADIUS = 8;
 
 export default function MealDetailScreen() {
   const { id, mealData } = useLocalSearchParams<{ id: string; mealData?: string }>();
   const { data: fetchedMeal, status } = useMeal(id || null);
   
   const meal = mealData ? JSON.parse(mealData) as typeof fetchedMeal : fetchedMeal;
-  const isLoading = !meal && status === 'loading';
 
   if (!meal && status === 'error') {
     return (
@@ -336,178 +326,4 @@ const styles = StyleSheet.create({
     fontSize: DESCRIPTION_FONT_SIZE,
     color: TEXT_COLOR_SECONDARY,
   },
-  skeletonHeader: {
-    height: HEADER_HEIGHT,
-    backgroundColor: SKELETON_BASE_COLOR,
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  skeletonGradientOverlay: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 200,
-  },
-  skeletonBackButton: {
-    position: 'absolute',
-    top: 48,
-    left: 16,
-    width: BACK_BUTTON_SIZE,
-    height: BACK_BUTTON_SIZE,
-    borderRadius: BACK_BUTTON_BORDER_RADIUS,
-    backgroundColor: SKELETON_BASE_COLOR,
-  },
-  skeletonTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    marginBottom: ITEM_SPACING,
-  },
-  skeletonTitle: {
-    flex: 1,
-    height: 40,
-    borderRadius: SKELETON_BORDER_RADIUS,
-    backgroundColor: SKELETON_BASE_COLOR,
-    marginRight: ITEM_SPACING,
-  },
-  skeletonCategory: {
-    width: 80,
-    height: 32,
-    borderRadius: BADGE_BORDER_RADIUS,
-    backgroundColor: SKELETON_BASE_COLOR,
-  },
-  skeletonDescription: {
-    height: 80,
-    borderRadius: SKELETON_BORDER_RADIUS,
-    backgroundColor: SKELETON_BASE_COLOR,
-    marginBottom: SECTION_SPACING,
-  },
-  skeletonSectionTitle: {
-    height: 24,
-    width: 120,
-    borderRadius: SKELETON_BORDER_RADIUS,
-    backgroundColor: SKELETON_BASE_COLOR,
-    marginBottom: ITEM_SPACING,
-  },
-  skeletonBadge: {
-    width: 80,
-    height: 32,
-    borderRadius: BADGE_BORDER_RADIUS,
-    backgroundColor: SKELETON_BASE_COLOR,
-  },
-  skeletonNutritionItem: {
-    flex: 1,
-    minWidth: '45%',
-    marginBottom: NUTRITION_ITEM_SPACING,
-  },
-  skeletonNutritionLabel: {
-    height: 16,
-    width: 60,
-    borderRadius: SKELETON_BORDER_RADIUS,
-    backgroundColor: SKELETON_BASE_COLOR,
-    marginBottom: 8,
-  },
-  skeletonNutritionValue: {
-    height: 24,
-    width: 40,
-    borderRadius: SKELETON_BORDER_RADIUS,
-    backgroundColor: SKELETON_BASE_COLOR,
-  },
 });
-
-type ShimmerBoxProps = {
-  style?: object;
-};
-
-const ShimmerBox: React.FC<ShimmerBoxProps> = ({ style }) => {
-  const shimmer = useSharedValue(0);
-
-  useEffect(() => {
-    shimmer.value = withRepeat(
-      withTiming(1, { duration: SHIMMER_DURATION }),
-      -1,
-      false
-    );
-  }, [shimmer]);
-
-  const animatedStyle = useAnimatedStyle(() => {
-    const translateX = interpolate(
-      shimmer.value,
-      [0, 1],
-      [-300, 300]
-    );
-    return {
-      transform: [{ translateX }],
-    };
-  });
-
-  return (
-    <View style={[style, { overflow: 'hidden', backgroundColor: SKELETON_BASE_COLOR }]}>
-      <Animated.View
-        style={[
-          {
-            position: 'absolute',
-            top: 0,
-            left: '-50%',
-            width: '50%',
-            height: '100%',
-            backgroundColor: SKELETON_HIGHLIGHT_COLOR,
-            opacity: 0.8,
-          },
-          animatedStyle,
-        ]}
-      />
-    </View>
-  );
-};
-
-const LoadingSkeleton: React.FC = () => {
-  return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-        <View style={styles.skeletonHeader}>
-          <ShimmerBox style={StyleSheet.absoluteFill} />
-          <LinearGradient
-            colors={['transparent', 'rgba(255, 255, 255, 0.3)', 'rgba(255, 255, 255, 0.7)', 'rgba(255, 255, 255, 0.9)', '#ffffff']}
-            locations={[0, 0.4, 0.7, 0.9, 1]}
-            style={styles.skeletonGradientOverlay}
-          />
-          <View style={styles.skeletonBackButton}>
-            <ShimmerBox style={StyleSheet.absoluteFill} />
-          </View>
-        </View>
-
-        <View style={styles.contentContainer}>
-          <View style={styles.skeletonTitleRow}>
-            <ShimmerBox style={styles.skeletonTitle} />
-            <ShimmerBox style={styles.skeletonCategory} />
-          </View>
-
-          <ShimmerBox style={styles.skeletonDescription} />
-
-          <View style={styles.section}>
-            <ShimmerBox style={styles.skeletonSectionTitle} />
-            <View style={styles.ingredientsContainer}>
-              {[1, 2, 3, 4, 5, 6].map((index) => (
-                <ShimmerBox key={index} style={styles.skeletonBadge} />
-              ))}
-            </View>
-          </View>
-
-          <View style={styles.section}>
-            <ShimmerBox style={styles.skeletonSectionTitle} />
-            <View style={styles.nutritionGrid}>
-              {[1, 2, 3, 4].map((index) => (
-                <View key={index} style={styles.skeletonNutritionItem}>
-                  <ShimmerBox style={styles.skeletonNutritionLabel} />
-                  <ShimmerBox style={styles.skeletonNutritionValue} />
-                </View>
-              ))}
-            </View>
-          </View>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-};

@@ -11,7 +11,7 @@ export { MealList } from './components/meal-list';
 
 // Hooks
 export { useMeals, useMeal } from './hooks/use-meals';
-export { useCreateMeal, useUpdateMeal, useDeleteMeal } from './hooks/use-meal-mutations';
+export { useCreateMeal } from './hooks/use-meal-mutations';
 
 // Types
 export type {
@@ -19,13 +19,10 @@ export type {
   MealCategory,
   NutritionalInfo,
   CreateMealRequest,
-  UpdateMealRequest,
   MealFilters,
   MealListParams,
 } from './types';
 
-// Utils
-export { getCategoryDisplayName, filterMealsBySearch, sortMeals } from './utils';
 
 // API (usually not exported, but available if needed)
 export * from './api/meals-api';

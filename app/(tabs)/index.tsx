@@ -3,7 +3,7 @@ import type { Meal } from '@/src/features/meals';
 import { MealList } from '@/src/features/meals';
 import { router } from 'expo-router';
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeInDown, FadeInRight } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -34,25 +34,16 @@ export default function HomeScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white" edges={['top']}>
+    <SafeAreaView style={styles.container} edges={['top']}>
       <Animated.View
         entering={FadeInDown.delay(100).springify()}
-        className="px-5 pb-4"
-        style={{
-          padding: HEADER_PADDING,
-          paddingBottom: HEADER_PADDING_BOTTOM,
-        }}
+        style={styles.headerContainer}
       >
-        <View className="flex-row items-center mb-2">
-          <View className="flex-1">
+        <View style={styles.headerRow}>
+          <View style={styles.titleContainer}>
             <Animated.Text
               entering={FadeInRight.delay(300).springify()}
-              className="text-gray-900 font-extrabold"
-              style={{
-                fontSize: TITLE_FONT_SIZE,
-                fontWeight: TITLE_FONT_WEIGHT,
-                color: TITLE_COLOR,
-              }}
+              style={styles.title}
             >
               Meals
             </Animated.Text>
@@ -60,14 +51,7 @@ export default function HomeScreen() {
           <Animated.View entering={FadeInRight.delay(400).springify()}>
             <TouchableOpacity
               onPress={handleAddMealPress}
-              style={{
-                width: ADD_BUTTON_SIZE,
-                height: ADD_BUTTON_SIZE,
-                borderRadius: ADD_BUTTON_BORDER_RADIUS,
-                backgroundColor: ADD_BUTTON_BACKGROUND,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
+              style={styles.addButton}
             >
               <IconSymbol
                 name="plus"
@@ -83,3 +67,36 @@ export default function HomeScreen() {
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+  },
+  headerContainer: {
+    padding: HEADER_PADDING,
+    paddingBottom: HEADER_PADDING_BOTTOM,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 8,
+  },
+  titleContainer: {
+    flex: 1,
+  },
+  title: {
+    fontSize: TITLE_FONT_SIZE,
+    fontWeight: TITLE_FONT_WEIGHT,
+    color: TITLE_COLOR,
+  },
+  addButton: {
+    width: ADD_BUTTON_SIZE,
+    height: ADD_BUTTON_SIZE,
+    borderRadius: ADD_BUTTON_BORDER_RADIUS,
+    backgroundColor: ADD_BUTTON_BACKGROUND,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
