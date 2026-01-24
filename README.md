@@ -1,4 +1,4 @@
-# Dishlist Mobile App
+# Dishlist Mobile Client
 
 Track your meals, discover new dishes, and never think about dinner again.
 
