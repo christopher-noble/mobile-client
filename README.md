@@ -4,13 +4,6 @@ Track your meals, discover new dishes, and never think about dinner again.
 
 This is a React Native mobile application built with Expo, serving both Android and iOS platforms.
 
-## Features
-
-- **Track Your Meals**: Keep a record of your favorite dishes and meal experiences
-- **Discover New Meals**: Explore new recipes and dining options
-- **Meal Planning**: Never worry about what to eat for dinner again
-- **Cross-Platform**: Available on both Android and iOS devices
-
 ## Getting Started
 
 ### Prerequisites
