@@ -1,50 +1,59 @@
-# Welcome to your Expo app 👋
+# Dishlist Mobile App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Track your meals, discover new dishes, and never think about dinner again.
 
-## Get started
+This is a React Native mobile application built with Expo, serving both Android and iOS platforms.
 
-1. Install dependencies
+## Features
 
+- **Track Your Meals**: Keep a record of your favorite dishes and meal experiences
+- **Discover New Meals**: Explore new recipes and dining options
+- **Meal Planning**: Never worry about what to eat for dinner again
+- **Cross-Platform**: Available on both Android and iOS devices
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or later)
+- npm or yarn
+- Expo CLI
+- Android Studio (for Android development)
+- Xcode (for iOS development, macOS only)
+
+### Installation
+
+1. Install dependencies:
    ```bash
    npm install
    ```
 
-2. Start the app
-
+2. Start the development server:
    ```bash
-   npx expo start
+   npm start
    ```
 
-In the output, you'll find options to open the app in a
+3. Run on your preferred platform:
+   - **Android**: Press `a` to open Android emulator
+   - **iOS**: Press `i` to open iOS simulator
+   - **Physical Device**: Scan the QR code with Expo Go app
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Architecture
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+This project follows a feature-based architecture pattern with high separation of concerns:
 
-## Get a fresh project
+- **Feature-Based Structure**: Each feature is self-contained in `src/features/`
+- **Shared Code**: Common utilities and components in `src/shared/`
+- **TypeScript**: Fully typed with strict mode enabled
+- **Expo Router**: File-based routing for navigation
 
-When you're ready, run:
+## Development
 
-```bash
-npm run reset-project
-```
+The app uses Expo Router for navigation and follows React Native best practices. All business logic is organized into feature modules with clear boundaries and public APIs.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Tech Stack
 
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- **React Native** with Expo
+- **TypeScript** for type safety
+- **Expo Router** for navigation
+- **Feature-based architecture** for scalability
