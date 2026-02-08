@@ -9,7 +9,7 @@ This is a React Native mobile application built with Expo, serving both Android 
 ### Prerequisites
 
 - Node.js (v18 or later)
-- npm or yarn
+- pnpm or yarn
 - Expo CLI
 - Android Studio (for Android development)
 - Xcode (for iOS development, macOS only)
@@ -17,13 +17,15 @@ This is a React Native mobile application built with Expo, serving both Android 
 ### Installation
 
 1. Install dependencies:
+
    ```bash
-   npm install
+   pnpm install
    ```
 
 2. Start the development server:
+
    ```bash
-   npm start
+   pnpm start
    ```
 
 3. Run on your preferred platform:

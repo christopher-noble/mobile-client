@@ -1,71 +1,89 @@
 import { Image } from 'expo-image';
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import type { Meal } from '../types';
+import React, { useState } from 'react';
+import { Platform, Pressable, StyleSheet, Text, View } from 'react-native';
+import type { Meal } from '@/src/shared/api/generated/graphql';
 
-const CARD_BACKGROUND_COLOR = '#fff';
-const CARD_BORDER_RADIUS = 12;
-const CARD_MARGIN = 8;
-const CARD_SHADOW_COLOR = '#000';
-const CARD_SHADOW_OFFSET_X = 0;
-const CARD_SHADOW_OFFSET_Y = 2;
-const CARD_SHADOW_OPACITY = 0.1;
-const CARD_SHADOW_RADIUS = 4;
-const CARD_ELEVATION = 3;
-const IMAGE_HEIGHT = 150;
-const TITLE_PADDING = 12;
-const TITLE_FONT_SIZE = 14;
-const TITLE_FONT_WEIGHT = '600';
-const TITLE_COLOR = '#333';
-const ACTIVE_OPACITY = 0.7;
+const CARD_WIDTH_WEB = 280;
+const IMAGE_HEIGHT_MOBILE = 150;
+const IMAGE_HEIGHT_WEB = CARD_WIDTH_WEB * 0.75;
 
-type MealCardProps = {
+interface MealCardProps {
   meal: Meal;
   onPress?: (meal: Meal) => void;
-};
+}
 
 export const MealCard: React.FC<MealCardProps> = ({ meal, onPress }) => {
+  const [hovered, setHovered] = useState(false);
+  const imageHeight = Platform.OS === 'web' ? IMAGE_HEIGHT_WEB : IMAGE_HEIGHT_MOBILE;
+
   return (
-    <TouchableOpacity
-      style={styles.card}
+    <Pressable
+      style={[
+        styles.card,
+        Platform.OS === 'web' && styles.cardWeb,
+        hovered && styles.cardHovered,
+      ]}
       onPress={() => onPress?.(meal)}
-      activeOpacity={ACTIVE_OPACITY}
+      onHoverIn={() => setHovered(true)}
+      onHoverOut={() => setHovered(false)}
     >
-      {meal.imageUrl && (
-        <Image source={{ uri: meal.imageUrl }} style={styles.image} />
+      {meal.imageUrl ? (
+        <Image source={{ uri: meal.imageUrl }} style={{ height: imageHeight }} contentFit="cover" />
+      ) : (
+        <View style={[styles.placeholder, { height: imageHeight }]}>
+          <Text style={styles.placeholderText}>🍽️</Text>
+        </View>
       )}
-      <View style={styles.titleContainer}>
-        <Text style={styles.title}>{meal.name}</Text>
+      <View style={styles.content}>
+        <Text style={styles.title} numberOfLines={2}>{meal.name}</Text>
+        <Text style={styles.category}>{meal.category}</Text>
       </View>
-    </TouchableOpacity>
+    </Pressable>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: CARD_BACKGROUND_COLOR,
-    borderRadius: CARD_BORDER_RADIUS,
-    margin: CARD_MARGIN,
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    margin: 8,
     overflow: 'hidden',
-    shadowColor: CARD_SHADOW_COLOR,
-    shadowOffset: { width: CARD_SHADOW_OFFSET_X, height: CARD_SHADOW_OFFSET_Y },
-    shadowOpacity: CARD_SHADOW_OPACITY,
-    shadowRadius: CARD_SHADOW_RADIUS,
-    elevation: CARD_ELEVATION,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.08,
+    shadowRadius: 12,
+    elevation: 3,
     flex: 1,
   },
-  image: {
-    width: '100%',
-    height: IMAGE_HEIGHT,
-    resizeMode: 'cover',
+  cardWeb: {
+    flex: 0,
+    width: CARD_WIDTH_WEB,
+  } as never,
+  cardHovered: {
+    transform: [{ scale: 1.02 }],
+    shadowOpacity: 0.15,
   },
-  titleContainer: {
-    padding: TITLE_PADDING,
+  placeholder: {
+    backgroundColor: '#F3F4F6',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  placeholderText: {
+    fontSize: 48,
+  },
+  content: {
+    padding: 14,
   },
   title: {
-    fontSize: TITLE_FONT_SIZE,
-    fontWeight: TITLE_FONT_WEIGHT,
-    color: TITLE_COLOR,
-    textAlign: 'center',
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#1a1a1a',
+  },
+  category: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: '#6B7280',
+    marginTop: 4,
+    textTransform: 'capitalize',
   },
 });
