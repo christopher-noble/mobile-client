@@ -40,7 +40,7 @@ export default function AddMealScreen() {
   const stepRefs = useRef<(TextInput | null)[]>([]);
 
   useEffect(() => {
-    setTimeout(() => nameRef.current?.focus(), 300);
+    setTimeout(() => nameRef.current?.focus(), 600);
   }, []);
 
   const updateIngredient = (index: number, text: string) => {
@@ -93,6 +93,7 @@ export default function AddMealScreen() {
           ingredients: validIngredients.map((i) => i.trim()),
         },
       },
+      refetchQueries: ['GetMeals'],
     });
 
     if (data?.createMeal) router.back();
@@ -114,7 +115,7 @@ export default function AddMealScreen() {
             <Animated.Text entering={FadeInDown.delay(200).springify()} style={styles.headerTitle}>
               Add New
             </Animated.Text>
-            <View style={styles.backButton} />
+            <View style={styles.headerSpacer} />
           </Animated.View>
         </View>
 
@@ -147,7 +148,7 @@ export default function AddMealScreen() {
                       style={[styles.chip, form.category === cat && styles.chipActive]}
                     >
                       <Text style={[styles.chipText, form.category === cat && styles.chipTextActive]}>
-                        {cat}
+                        {cat.charAt(0) + cat.slice(1).toLowerCase()}
                       </Text>
                     </Pressable>
                   ))}
@@ -268,31 +269,35 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: 16,
+    paddingHorizontal: 20,
+    paddingVertical: 16,
     paddingTop: Platform.OS === 'web' ? 32 : 8,
   },
-  backButton: { width: 44, height: 44, borderRadius: 22, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4, elevation: 3 },
+  backButton: Platform.OS === 'web'
+    ? { width: 44, height: 44, borderRadius: 22, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' } as any
+    : { width: 44, height: 44, borderRadius: 22, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center', shadowColor: '#000', shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.1, shadowRadius: 4, elevation: 3 },
+  headerSpacer: { width: 44 },
   headerTitle: { fontSize: 24, fontWeight: '700', color: '#1a1a1a' },
-  scrollContent: { alignItems: 'center', paddingBottom: 40 },
-  formWrapper: { width: '100%', alignItems: 'center', padding: 16 },
+  scrollContent: { alignItems: 'center', paddingBottom: 60 },
+  formWrapper: { width: '100%', alignItems: 'center', paddingHorizontal: 20, paddingTop: 8 },
   form: { width: '100%', maxWidth: Platform.OS === 'web' ? MAX_WIDTH_WEB : undefined },
-  section: { marginBottom: 24 },
-  nameInput: { fontSize: 28, fontWeight: '700', color: '#1a1a1a', padding: 8 },
-  label: { fontSize: 14, fontWeight: '600', color: '#1a1a1a', marginBottom: 8 },
-  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 8 },
-  chip: { paddingHorizontal: 16, paddingVertical: 8, borderRadius: 20, backgroundColor: '#F3F4F6', borderWidth: 1, borderColor: '#E5E7EB' },
+  section: { marginBottom: 36 },
+  nameInput: { fontSize: 28, fontWeight: '700', color: '#1a1a1a', paddingVertical: 12, paddingHorizontal: 8, borderWidth: 0, outlineStyle: 'none' } as any,
+  label: { fontSize: 14, fontWeight: '600', color: '#1a1a1a', marginBottom: 12 },
+  chips: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+  chip: { paddingHorizontal: 16, paddingVertical: 10, borderRadius: 20, backgroundColor: '#F3F4F6', borderWidth: 1, borderColor: '#E5E7EB' },
   chipActive: { backgroundColor: '#007AFF', borderColor: '#007AFF' },
-  chipText: { fontSize: 14, fontWeight: '600', color: '#666', textTransform: 'capitalize' },
+  chipText: { fontSize: 14, fontWeight: '600', color: '#666' },
   chipTextActive: { color: '#fff' },
-  row: { flexDirection: 'row', alignItems: 'center', marginBottom: 12, gap: 8 },
+  row: { flexDirection: 'row', alignItems: 'center', marginBottom: 14, gap: 10 },
   input: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#E5E7EB', borderRadius: 12, padding: 16, fontSize: 16, color: '#1a1a1a' },
   removeButton: { width: 32, height: 32, borderRadius: 16, backgroundColor: '#FEE2E2', alignItems: 'center', justifyContent: 'center' },
   removeText: { fontSize: 20, color: '#DC2626', fontWeight: '600' },
-  addButton: { height: 44, borderRadius: 12, backgroundColor: '#F3F4F6', alignItems: 'center', justifyContent: 'center' },
+  addButton: { height: 48, borderRadius: 12, backgroundColor: '#F3F4F6', alignItems: 'center', justifyContent: 'center', marginTop: 4 },
   addButtonText: { fontSize: 14, fontWeight: '600', color: '#007AFF' },
   stepNumber: { width: 32, height: 32, borderRadius: 16, backgroundColor: '#007AFF', alignItems: 'center', justifyContent: 'center' },
   stepNumberText: { fontSize: 14, fontWeight: '700', color: '#fff' },
-  stepper: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 16 },
+  stepper: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 20, marginTop: 4 },
   stepperButton: { width: 48, height: 48, borderRadius: 24, backgroundColor: '#F0F9FF', borderWidth: 2, borderColor: '#007AFF', alignItems: 'center', justifyContent: 'center' },
   stepperButtonDisabled: { backgroundColor: '#F3F4F6', borderColor: '#E5E7EB', opacity: 0.5 },
   stepperButtonText: { fontSize: 24, fontWeight: '700', color: '#007AFF' },
@@ -302,7 +307,7 @@ const styles = StyleSheet.create({
   stepperLabel: { fontSize: 11, color: '#666', marginTop: 2 },
   error: { fontSize: 14, color: '#DC2626', textAlign: 'center', marginTop: 8 },
   footerWrapper: { alignItems: 'center', borderTopWidth: 1, borderTopColor: '#E5E7EB', backgroundColor: '#FAFAFA' },
-  footer: { width: '100%', maxWidth: Platform.OS === 'web' ? MAX_WIDTH_WEB : undefined, padding: 16 },
+  footer: { width: '100%', maxWidth: Platform.OS === 'web' ? MAX_WIDTH_WEB : undefined, padding: 20 },
   submitButton: { height: 56, borderRadius: 16, backgroundColor: '#007AFF', alignItems: 'center', justifyContent: 'center' },
   submitButtonDisabled: { backgroundColor: '#E5E7EB' },
   submitText: { fontSize: 18, fontWeight: '700', color: '#fff' },

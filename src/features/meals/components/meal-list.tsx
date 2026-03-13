@@ -50,7 +50,7 @@ export const MealList: React.FC<MealListProps> = ({ userId, onMealPress }) => {
 
   if (Platform.OS === 'web') {
     return (
-      <ScrollView contentContainerStyle={styles.webContainer}>
+      <ScrollView style={styles.fill} contentContainerStyle={styles.webContainer}>
         <View style={styles.webGrid}>
           {data.meals.map((meal) => (
             <MealCard key={meal.id} meal={meal} onPress={handleCardPress} />
@@ -74,6 +74,9 @@ export const MealList: React.FC<MealListProps> = ({ userId, onMealPress }) => {
 };
 
 const styles = StyleSheet.create({
+  fill: {
+    flex: 1,
+  },
   center: {
     flex: 1,
     justifyContent: 'center',

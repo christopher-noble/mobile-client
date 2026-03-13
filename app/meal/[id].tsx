@@ -4,7 +4,7 @@ import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams } from 'expo-router';
 import React from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, {
     FadeInDown,
     FadeInUp,
@@ -108,7 +108,7 @@ export default function MealDetailScreen() {
               </Text>
               <View style={styles.categoryBadge}>
                 <Text style={styles.categoryText}>
-                  {meal.category}
+                  {meal.category.charAt(0) + meal.category.slice(1).toLowerCase()}
                 </Text>
               </View>
             </View>
@@ -225,19 +225,29 @@ const styles = StyleSheet.create({
     top: 48,
     left: 16,
   },
-  backButton: {
-    width: BACK_BUTTON_SIZE,
-    height: BACK_BUTTON_SIZE,
-    borderRadius: BACK_BUTTON_BORDER_RADIUS,
-    backgroundColor: BACK_BUTTON_BACKGROUND,
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: CARD_SHADOW_COLOR,
-    shadowOffset: { width: CARD_SHADOW_OFFSET_X, height: CARD_SHADOW_OFFSET_Y },
-    shadowOpacity: CARD_SHADOW_OPACITY,
-    shadowRadius: CARD_SHADOW_RADIUS,
-    elevation: CARD_ELEVATION,
-  },
+  backButton: Platform.OS === 'web'
+    ? {
+        width: BACK_BUTTON_SIZE,
+        height: BACK_BUTTON_SIZE,
+        borderRadius: BACK_BUTTON_BORDER_RADIUS,
+        backgroundColor: BACK_BUTTON_BACKGROUND,
+        alignItems: 'center',
+        justifyContent: 'center',
+        boxShadow: `${CARD_SHADOW_OFFSET_X}px ${CARD_SHADOW_OFFSET_Y}px ${CARD_SHADOW_RADIUS}px rgba(0,0,0,${CARD_SHADOW_OPACITY})`,
+      } as any
+    : {
+        width: BACK_BUTTON_SIZE,
+        height: BACK_BUTTON_SIZE,
+        borderRadius: BACK_BUTTON_BORDER_RADIUS,
+        backgroundColor: BACK_BUTTON_BACKGROUND,
+        alignItems: 'center',
+        justifyContent: 'center',
+        shadowColor: CARD_SHADOW_COLOR,
+        shadowOffset: { width: CARD_SHADOW_OFFSET_X, height: CARD_SHADOW_OFFSET_Y },
+        shadowOpacity: CARD_SHADOW_OPACITY,
+        shadowRadius: CARD_SHADOW_RADIUS,
+        elevation: CARD_ELEVATION,
+      },
   contentContainer: {
     padding: CONTENT_PADDING,
   },
@@ -264,7 +274,6 @@ const styles = StyleSheet.create({
     fontSize: INGREDIENT_FONT_SIZE,
     color: '#C2410C',
     fontWeight: '600',
-    textTransform: 'capitalize',
   },
   description: {
     fontSize: DESCRIPTION_FONT_SIZE,

@@ -16,13 +16,22 @@ export const MealCard: React.FC<MealCardProps> = ({ meal, onPress }) => {
   const [hovered, setHovered] = useState(false);
   const imageHeight = Platform.OS === 'web' ? IMAGE_HEIGHT_WEB : IMAGE_HEIGHT_MOBILE;
 
+  const cardStyle = Platform.OS === 'web'
+    ? {
+        backgroundColor: '#fff',
+        borderRadius: 16,
+        margin: 8,
+        overflow: 'hidden' as const,
+        width: CARD_WIDTH_WEB,
+        boxShadow: hovered ? '0 4px 12px rgba(0,0,0,0.15)' : '0 4px 12px rgba(0,0,0,0.08)',
+        transform: hovered ? [{ scale: 1.02 }] : undefined,
+        cursor: 'pointer' as const,
+      }
+    : [styles.card, hovered && styles.cardHovered];
+
   return (
     <Pressable
-      style={[
-        styles.card,
-        Platform.OS === 'web' && styles.cardWeb,
-        hovered && styles.cardHovered,
-      ]}
+      style={cardStyle as any}
       onPress={() => onPress?.(meal)}
       onHoverIn={() => setHovered(true)}
       onHoverOut={() => setHovered(false)}
@@ -36,11 +45,15 @@ export const MealCard: React.FC<MealCardProps> = ({ meal, onPress }) => {
       )}
       <View style={styles.content}>
         <Text style={styles.title} numberOfLines={2}>{meal.name}</Text>
-        <Text style={styles.category}>{meal.category}</Text>
+        <Text style={styles.category}>{meal.category.charAt(0) + meal.category.slice(1).toLowerCase()}</Text>
       </View>
     </Pressable>
   );
 };
+
+const nativeShadow = Platform.OS !== 'web'
+  ? { shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.08, shadowRadius: 12, elevation: 3 }
+  : {};
 
 const styles = StyleSheet.create({
   card: {
@@ -48,20 +61,12 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     margin: 8,
     overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 3,
     flex: 1,
+    ...nativeShadow,
   },
-  cardWeb: {
-    flex: 0,
-    width: CARD_WIDTH_WEB,
-  } as never,
   cardHovered: {
     transform: [{ scale: 1.02 }],
-    shadowOpacity: 0.15,
+    ...(Platform.OS !== 'web' ? { shadowOpacity: 0.15 } : {}),
   },
   placeholder: {
     backgroundColor: '#F3F4F6',
@@ -84,6 +89,5 @@ const styles = StyleSheet.create({
     fontWeight: '500',
     color: '#6B7280',
     marginTop: 4,
-    textTransform: 'capitalize',
   },
 });
